@@ -5,34 +5,42 @@ TASK_FILE="tarea.txt"
 ###funciones
 
 agregar_tarea() {
-    echo -n "Ingrese la descripcion de la tarea"
+    echo -n "Ingrese la descripcion de la tarea: "
     read descripcion
     echo "Ingrese la fecha de vencimiento de la tarea (Formato DD-MM-YYYY)"
     read fecha
     tarea_id=$(date +%s)
-    echo "$tarea_id | $decripcion | $fecha" >> $TASK_FILE
+    echo "$tarea_id | $descripcion | $fecha" >> $TASK_FILE
+    echo "---------------------------------------------"
     echo "Tarea agregada con el ID $tarea_id"
+    echo "---------------------------------------------"
 }
 
 listar_tarea() {
-    echo "Tareas pendientes"
-    while IFS="|" read -r id descripcion fecha; do
-        echo "ID: id"
-        echo "Descripcion: $descripcion"
-        echo "Fecha de vencimiento: $fecha"
-        echo "---------------------------"
+    echo "---------------------------------------------"
+    echo "Tareas pendientes: "
+    while IFS="|" read -r id desc fecha; do
+        echo "ID: $id | Descripcion: $desc | Fecha de vencimiento: $fecha"
     done < $TASK_FILE
+    echo "---------------------------------------------"
 }
 
 marcar() {
     echo "Ingrese el ID de la tarea a marcar completada: "
-    read id
-    sed -i "/^$id/d" $TASK_FILE
+    read tarea_id
+    sed -i "/^$tarea_id/d" "$TASK_FILE"
+    echo "---------------------------------------------"
     echo "Tarea completada"
+    echo "---------------------------------------------"
 }
 
 eliminar() {
-    
+    echo "Ingrese el ID de la tarea a eliminar"
+    read tarea_id
+    sed -i "/^$tarea_id/d" "$TASK_FILE"
+    echo "---------------------------------------------"
+    echo "Tarea Eliminada"
+    echo "---------------------------------------------"
 }
 
 ###menu principal
@@ -42,7 +50,7 @@ while true; do
     echo "2. Listar Tarea"
     echo "3. Marcar tarea completada"
     echo "4. Eliminar Tarea"
-    echo "5. Salir Tarea"
+    echo "5. Salir del programa"
     echo -n "Selecciona una opcion: "
     read opcion
 
